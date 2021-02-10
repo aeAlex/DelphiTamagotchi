@@ -1,0 +1,21 @@
+object CharacterSprite: TCharacterSprite
+  Size.Width = 500.000000000000000000
+  Size.Height = 500.000000000000000000
+  Size.PlatformDefault = False
+  object Rectangle1: TRectangle
+    Align = Client
+    Corners = []
+    Fill.Bitmap.WrapMode = TileStretch
+    Fill.Kind = Bitmap
+    HitTest = False
+    Size.Width = 500.000000000000000000
+    Size.Height = 500.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+    object CharacterAnimation: TBitmapListAnimation
+      AnimationCount = 1
+      Duration = 1.000000000000000000
+      PropertyName = 'Fill.Bitmap.Bitmap'
+    end
+  end
+end

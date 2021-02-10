@@ -1,0 +1,11 @@
+object CharacterSprite: TCharacterSprite
+  Size.Width = 500.000000000000000000
+  Size.Height = 500.000000000000000000
+  Size.PlatformDefault = False
+  object Rectangle1: TRectangle
+    Align = Client
+    Size.Width = 500.000000000000000000
+    Size.Height = 500.000000000000000000
+    Size.PlatformDefault = False
+  end
+end

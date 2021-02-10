@@ -1,0 +1,13 @@
+object Background: TBackground
+  Size.Width = 1500.000000000000000000
+  Size.Height = 1000.000000000000000000
+  Size.PlatformDefault = False
+  object Rectangle1: TRectangle
+    Align = Client
+    Fill.Bitmap.WrapMode = Tile
+    Fill.Kind = Bitmap
+    Size.Width = 1500.000000000000000000
+    Size.Height = 1000.000000000000000000
+    Size.PlatformDefault = False
+  end
+end

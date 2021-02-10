@@ -1,0 +1,5 @@
+object Background: TBackground
+  Size.Width = 1000.000000000000000000
+  Size.Height = 1000.000000000000000000
+  Size.PlatformDefault = False
+end
