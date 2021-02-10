@@ -1,0 +1,31 @@
+object SpriteAnimationFrame: TSpriteAnimationFrame
+  Size.Width = 400.000000000000000000
+  Size.Height = 400.000000000000000000
+  Size.PlatformDefault = False
+  object rectAnimation: TRectangle
+    Align = Client
+    Corners = []
+    Fill.Bitmap.WrapMode = TileStretch
+    Fill.Kind = Bitmap
+    Size.Width = 400.000000000000000000
+    Size.Height = 400.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+    object SpriteAnimation: TBitmapListAnimation
+      AnimationCount = 1
+      Duration = 1.000000000000000000
+      Loop = True
+      PropertyName = 'Fill.Bitmap.Bitmap'
+    end
+  end
+  object rectNoAnimation: TRectangle
+    Align = Client
+    Corners = []
+    Fill.Kind = None
+    HitTest = False
+    Size.Width = 400.000000000000000000
+    Size.Height = 400.000000000000000000
+    Size.PlatformDefault = False
+    Stroke.Kind = None
+  end
+end

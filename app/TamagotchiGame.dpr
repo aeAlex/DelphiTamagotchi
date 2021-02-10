@@ -9,7 +9,8 @@ uses
   fBackground in 'fBackground.pas' {Background: TFrame},
   fSpriteAnimation in 'fSpriteAnimation.pas' {SpriteAnimationFrame: TFrame},
   fShowerAnimation in 'fShowerAnimation.pas' {ShowerAnimationFrame: TFrame},
-  IAnimationController in 'IAnimationController.pas';
+  IAnimationController in 'IAnimationController.pas',
+  fButton in '..\..\FirstDelphiGame\app\fButton.pas' {MyButton: TFrame};
 
 {$R *.res}
 

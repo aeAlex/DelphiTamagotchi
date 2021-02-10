@@ -1,0 +1,44 @@
+unit fSpriteAnimation;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
+  FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls, FMX.Ani, FMX.Objects, IAnimationController;
+
+type
+  TSpriteAnimationFrame = class(TFrame, IAnimationControler)
+    rectAnimation: TRectangle;
+    SpriteAnimation: TBitmapListAnimation;
+    rectNoAnimation: TRectangle;
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    procedure StartAnimation;
+    procedure StopAnimation;
+  end;
+
+implementation
+
+{$R *.fmx}
+
+{ TSpriteAnimationFrame }
+
+procedure TSpriteAnimationFrame.StartAnimation;
+begin
+  SpriteAnimation.Start;
+  rectAnimation.Visible := true;
+  //rectNoAnimation.Visible := false;
+  //SpriteAnimation.Start;
+end;
+
+procedure TSpriteAnimationFrame.StopAnimation;
+begin
+  //SpriteAnimation.Enabled := false;
+  rectAnimation.Visible := false;
+  //rectNoAnimation.Visible := true;
+  //SpriteAnimation.Stop;
+end;
+
+end.

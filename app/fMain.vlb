@@ -1,6 +1,21 @@
 ﻿[TIdleCharacter1]
-Coordinates=10,10,92,33
+Coordinates=10,10,107,36
 
 []
 Coordinates=121,1,82,33
+
+[TBackground1.Rectangle1]
+Coordinates=136,1,167,36
+
+[TIdleCharacter1.CharacterAnimation]
+Coordinates=322,1,224,36
+
+[TBackground1]
+Coordinates=136,56,98,36
+
+[TIdleCharacter1.Rectangle1]
+Coordinates=322,56,176,36
+
+[TShowerAnimationFrame1]
+Coordinates=584,1,167,36
 

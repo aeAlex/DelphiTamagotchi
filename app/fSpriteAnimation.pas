@@ -8,8 +8,9 @@ uses
 
 type
   TSpriteAnimationFrame = class(TFrame, IAnimationControler)
-    Rectangle1: TRectangle;
+    rectAnimation: TRectangle;
     SpriteAnimation: TBitmapListAnimation;
+    rectNoAnimation: TRectangle;
   private
     { Private declarations }
   public
@@ -26,12 +27,16 @@ implementation
 
 procedure TSpriteAnimationFrame.StartAnimation;
 begin
-  SpriteAnimation.Enabled := true;
+  rectNoAnimation.Visible := false;
+  rectAnimation.Visible := true;
+  SpriteAnimation.Start;
 end;
 
 procedure TSpriteAnimationFrame.StopAnimation;
 begin
-  SpriteAnimation.Enabled := false;
+  SpriteAnimation.Stop;
+  rectAnimation.Visible := false;
+  rectNoAnimation.Visible := true;
 end;
 
 end.

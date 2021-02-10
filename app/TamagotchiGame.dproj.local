@@ -1,20 +1,20 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.059,=D:\Programming\Delphi\TamagotchiGame\app\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.837,D:\Programming\Delphi\TamagotchiGame\app\Unit1.pas=D:\Programming\Delphi\TamagotchiGame\app\fBackground.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.114,D:\Programming\Delphi\Unit1.fmx=D:\Programming\Delphi\TamagotchiGame\app\fMain.fmx</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.374,D:\Programming\Delphi\TamagotchiGame\app\fCharacterFrame.pas=D:\Programming\Delphi\TamagotchiGame\app\fCharacter.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.004,=D:\Programming\Delphi\TamagotchiGame\app\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.336,D:\Programming\Delphi\TamagotchiGame\app\Unit1.pas=D:\Programming\Delphi\TamagotchiGame\app\fIdleCharacter.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.274,=D:\Programming\Delphi\TamagotchiGame\app\Unit1.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.741,D:\Programming\Delphi\TamagotchiGame\app\Unit1.pas=D:\Programming\Delphi\TamagotchiGame\app\fCharacterFrame.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.059,=D:\Programming\Delphi\TamagotchiGame\app\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.374,D:\Programming\Delphi\TamagotchiGame\app\fCharacterFrame.fmx=D:\Programming\Delphi\TamagotchiGame\app\fCharacter.fmx</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.114,D:\Programming\Delphi\Unit1.fmx=D:\Programming\Delphi\TamagotchiGame\app\fMain.fmx</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.837,D:\Programming\Delphi\TamagotchiGame\app\Unit1.pas=D:\Programming\Delphi\TamagotchiGame\app\fBackground.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.004,=D:\Programming\Delphi\TamagotchiGame\app\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.374,D:\Programming\Delphi\TamagotchiGame\app\fCharacterFrame.pas=D:\Programming\Delphi\TamagotchiGame\app\fCharacter.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.741,D:\Programming\Delphi\TamagotchiGame\app\Unit1.fmx=D:\Programming\Delphi\TamagotchiGame\app\fCharacterFrame.fmx</Transaction>
     <Transaction>1899.12.30 00:00:00.000.436,D:\Programming\Delphi\Project1.dproj=D:\Programming\Delphi\TamagotchiGame\app\TamagotchiGame.dproj</Transaction>
     <Transaction>1899.12.30 00:00:00.000.114,D:\Programming\Delphi\Unit1.pas=D:\Programming\Delphi\TamagotchiGame\app\fMain.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.088,=D:\Programming\Delphi\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.741,D:\Programming\Delphi\TamagotchiGame\app\Unit1.fmx=D:\Programming\Delphi\TamagotchiGame\app\fCharacterFrame.fmx</Transaction>
     <Transaction>1899.12.30 00:00:00.000.908,=D:\Programming\Delphi\Unit1.pas</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.374,D:\Programming\Delphi\TamagotchiGame\app\fCharacterFrame.fmx=D:\Programming\Delphi\TamagotchiGame\app\fCharacter.fmx</Transaction>
     <Transaction>1899.12.30 00:00:00.000.837,D:\Programming\Delphi\TamagotchiGame\app\Unit1.fmx=D:\Programming\Delphi\TamagotchiGame\app\fBackground.fmx</Transaction>
     <Transaction>1899.12.30 00:00:00.000.336,D:\Programming\Delphi\TamagotchiGame\app\Unit1.fmx=D:\Programming\Delphi\TamagotchiGame\app\fIdleCharacter.fmx</Transaction>
     <Transaction>2021.02.10 08:43:54.555,=D:\Programming\Delphi\TamagotchiGame\app\Unit1.pas</Transaction>
@@ -22,10 +22,11 @@
     <Transaction>2021.02.10 08:45:05.361,D:\Programming\Delphi\TamagotchiGame\app\fSpriteAnimation.pas=D:\Programming\Delphi\TamagotchiGame\app\Unit1.pas</Transaction>
     <Transaction>2021.02.10 08:45:05.361,D:\Programming\Delphi\TamagotchiGame\app\fSpriteAnimation.fmx=D:\Programming\Delphi\TamagotchiGame\app\Unit1.fmx</Transaction>
     <Transaction>2021.02.10 08:49:16.875,=D:\Programming\Delphi\TamagotchiGame\app\Unit1.pas</Transaction>
-    <Transaction>2021.02.10 08:49:30.208,D:\Programming\Delphi\TamagotchiGame\app\fShowerAnimation.fmx=D:\Programming\Delphi\TamagotchiGame\app\Unit1.fmx</Transaction>
     <Transaction>2021.02.10 08:49:30.208,D:\Programming\Delphi\TamagotchiGame\app\fShowerAnimation.pas=D:\Programming\Delphi\TamagotchiGame\app\Unit1.pas</Transaction>
+    <Transaction>2021.02.10 08:49:30.208,D:\Programming\Delphi\TamagotchiGame\app\fShowerAnimation.fmx=D:\Programming\Delphi\TamagotchiGame\app\Unit1.fmx</Transaction>
     <Transaction>2021.02.10 09:06:20.513,=D:\Programming\Delphi\TamagotchiGame\app\Unit1.pas</Transaction>
     <Transaction>2021.02.10 09:12:02.001,D:\Programming\Delphi\TamagotchiGame\app\IAnimationController.pas=D:\Programming\Delphi\TamagotchiGame\app\Unit1.pas</Transaction>
+    <Transaction>2021.02.10 09:41:18.903,=D:\Programming\Delphi\FirstDelphiGame\app\fButton.pas</Transaction>
   </Transactions>
 	<ActiveMobileDevice>
 		<NoProfile iOSSimulator="iPhone5"/>
