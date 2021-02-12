@@ -1,0 +1,25 @@
+unit fBombSprite;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, 
+  FMX.Types, FMX.Graphics, FMX.Controls, FMX.Forms, FMX.Dialogs, FMX.StdCtrls, fSprite, FMX.Ani, FMX.Objects;
+
+type
+  TSprite1 = class(TSprite)
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+    constructor Create(AOwner: TComponent); override;
+  end;
+
+var
+  Sprite1: TSprite1;
+
+implementation
+
+{$R *.fmx}
+
+end.

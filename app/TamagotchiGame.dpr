@@ -11,13 +11,16 @@ uses
   fShowerAnimation in 'fShowerAnimation.pas' {ShowerAnimationFrame: TFrame},
   IAnimationController in 'IAnimationController.pas',
   fButton in '..\..\FirstDelphiGame\app\fButton.pas' {MyButton: TFrame},
-  dmStatsDataManager in 'dmStatsDataManager.pas' {StatsDataManager: TDataModule};
+  dmStatsDataManager in 'dmStatsDataManager.pas' {StatsDataManager: TDataModule},
+  fSprite in 'fSprite.pas' {Sprite: TFrame},
+  fCoinSprite in 'fCoinSprite.pas' {CoinSprite: TFrame},
+  fBombSprite in 'fBombSprite.pas' {BombSprite: TFrame};
 
 {$R *.res}
 
 begin
   Application.Initialize;
-  Application.CreateForm(TStatsDataManager, statsDataManager);
+  Application.CreateForm(TstatsDataManager, statsDataManager);
   Application.CreateForm(TForm1, Form1);
   Application.Run;
 end.

@@ -32,18 +32,26 @@ type
     LGame: TLayout;
     Rectangle3: TRectangle;
     btnBackFromGame: TRectangle;
+    GameLoop: TTimer;
+    Rectangle4: TRectangle;
+    lblCoins: TLabel;
+    LStatsOverlay: TLayout;
     procedure FormCreate(Sender: TObject);
     procedure btnShowerClick(Sender: TObject);
     procedure btnResurectClick(Sender: TObject);
     procedure btnPlayClick(Sender: TObject);
     procedure btnBackFromGameClick(Sender: TObject);
+    procedure GameLoopTimer(Sender: TObject);
   private
     { Private declarations }
     showerActivated: boolean;
     outerElementsList: TList<TControl>;
+    showerButtonText: string;
     procedure initGame();
     procedure makeAllControlsInvisible();
     procedure killSlime();
+    procedure updateDisplayedStats();
+    procedure checkWaterBill();
   public
     { Public declarations }
   end;
@@ -55,7 +63,7 @@ implementation
 
 {$R *.fmx}
 
-uses dmStatsDataManager;
+uses dmStatsDataManager, fSprite, fCoinSprite, fBombSprite;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
@@ -136,27 +144,27 @@ begin
 
         end;
 
+        if showerActivated then
+        begin
+          statsDataManager.coins := statsDataManager.coins - 1;
+        end;
+
         // kill slime when lifes are 0
         if statsDataManager.lifes <= 0 then
         begin
           killSlime();
         end;
 
-        lblWater.Text := statsDataManager.waterLevel.toString;
-        lblLifes.Text := statsDataManager.lifes.toString;
-
       end;
     end);
   reduceWaterTask.Start();
 
-  lblWater.Text := statsDataManager.waterLevel.toString;
-  lblLifes.Text := statsDataManager.lifes.toString;
 end;
 
 procedure TForm1.btnPlayClick(Sender: TObject);
 begin
   makeAllControlsInvisible();
-  lGame.Visible := true;
+  LGame.Visible := true;
 end;
 
 procedure TForm1.btnResurectClick(Sender: TObject);
@@ -171,15 +179,30 @@ begin
   if not showerActivated then
   begin
     TShowerAnimationFrame1.StartAnimation;
-    btnShower.Label1.Text := 'Deactivate Shower';
+    showerButtonText := 'Deactivate Shower';
   end
   else
   begin
     TShowerAnimationFrame1.StopAnimation;
-    btnShower.Label1.Text := 'Activate Shower';
+    showerButtonText := 'Activate Shower';
   end;
   showerActivated := not showerActivated;
 
+  checkWaterBill;
+end;
+
+procedure TForm1.checkWaterBill;
+begin
+  if statsDataManager.coins <= 0 then
+  begin
+    btnShower.Label1.Text := 'You need Coins to Activate the Shower';
+    showerActivated := false;
+    TShowerAnimationFrame1.StopAnimation;
+  end
+  else
+  begin // can pay shower bill
+    btnShower.Label1.Text := showerButtonText;
+  end;
 end;
 
 procedure TForm1.killSlime;
@@ -196,6 +219,13 @@ begin
     outerElementsList[i].Visible := false;
 end;
 
+procedure TForm1.updateDisplayedStats;
+begin
+  lblWater.Text := statsDataManager.waterLevel.toString;
+  lblLifes.Text := statsDataManager.lifes.toString;
+  lblCoins.Text := statsDataManager.coins.toString;
+end;
+
 procedure TForm1.btnBackFromGameClick(Sender: TObject);
 begin
   makeAllControlsInvisible(); // Make needed Controls visible
@@ -203,6 +233,44 @@ begin
   TIdleCharacter1.Visible := true;
   TBackground1.Visible := true;
   TShowerAnimationFrame1.Visible := true;
+end;
+
+procedure TForm1.GameLoopTimer(Sender: TObject);
+var
+  i: integer;
+  nbsprite: integer;
+begin
+  updateDisplayedStats;
+  checkWaterBill;
+
+  // Let the user Collect Coins when in play mode
+  if LGame.Visible then
+  begin
+    i := 0;
+    nbsprite := 0;
+    while (i < LGame.ChildrenCount) do
+    begin
+      if (LGame.Children[i] is TSprite) then
+      begin
+        if (LGame.Children[i] as TSprite).CanBeKilled then
+          // Remove when marked as killable
+          LGame.RemoveObject(i)
+        else
+        begin
+          (LGame.Children[i] as TSprite).MoveSprite;
+          inc(i);
+          inc(nbsprite);
+        end;
+      end
+      else
+        inc(i);
+    end;
+    if (nbsprite < 10) and (random(100) < 10) then
+      if random(100) < 80 then
+        TCoinSprite.Create(LGame)
+      else
+        TBombSprite.Create(LGame)
+  end;
 end;
 
 end.
