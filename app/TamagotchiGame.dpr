@@ -10,12 +10,14 @@ uses
   fSpriteAnimation in 'fSpriteAnimation.pas' {SpriteAnimationFrame: TFrame},
   fShowerAnimation in 'fShowerAnimation.pas' {ShowerAnimationFrame: TFrame},
   IAnimationController in 'IAnimationController.pas',
-  fButton in '..\..\FirstDelphiGame\app\fButton.pas' {MyButton: TFrame};
+  fButton in '..\..\FirstDelphiGame\app\fButton.pas' {MyButton: TFrame},
+  dmStatsDataManager in 'dmStatsDataManager.pas' {StatsDataManager: TDataModule};
 
 {$R *.res}
 
 begin
   Application.Initialize;
+  Application.CreateForm(TStatsDataManager, statsDataManager);
   Application.CreateForm(TForm1, Form1);
   Application.Run;
 end.
