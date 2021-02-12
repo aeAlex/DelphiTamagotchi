@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{285B715A-864F-423C-8314-426700A47CA0}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="TamagotchiGame.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\..\FirstDelphiGame\app\firstProject.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="TamagotchiGame">
+        <MSBuild Projects="TamagotchiGame.dproj"/>
+    </Target>
+    <Target Name="TamagotchiGame:Clean">
+        <MSBuild Projects="TamagotchiGame.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TamagotchiGame:Make">
+        <MSBuild Projects="TamagotchiGame.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="firstProject">
+        <MSBuild Projects="..\..\FirstDelphiGame\app\firstProject.dproj"/>
+    </Target>
+    <Target Name="firstProject:Clean">
+        <MSBuild Projects="..\..\FirstDelphiGame\app\firstProject.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="firstProject:Make">
+        <MSBuild Projects="..\..\FirstDelphiGame\app\firstProject.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="TamagotchiGame;firstProject"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="TamagotchiGame:Clean;firstProject:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="TamagotchiGame:Make;firstProject:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

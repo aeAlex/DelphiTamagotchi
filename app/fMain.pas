@@ -16,7 +16,7 @@ type
     TIdleCharacter1: TIdleCharacter;
     TBackground1: TBackground;
     TShowerAnimationFrame1: TShowerAnimationFrame;
-    LShower: TLayout;
+    LOverlay: TLayout;
     btnShower: TMyButton;
     GridLayout1: TGridLayout;
     rectLifeImage: TRectangle;
@@ -28,9 +28,15 @@ type
     Rectangle2: TRectangle;
     Label1: TLabel;
     btnResurect: TButton;
+    btnPlay: TRectangle;
+    LGame: TLayout;
+    Rectangle3: TRectangle;
+    btnBackFromGame: TRectangle;
     procedure FormCreate(Sender: TObject);
     procedure btnShowerClick(Sender: TObject);
     procedure btnResurectClick(Sender: TObject);
+    procedure btnPlayClick(Sender: TObject);
+    procedure btnBackFromGameClick(Sender: TObject);
   private
     { Private declarations }
     showerActivated: boolean;
@@ -55,10 +61,11 @@ procedure TForm1.FormCreate(Sender: TObject);
 begin
   outerElementsList := TList<TControl>.Create;
   outerElementsList.Add(LDead);
-  outerElementsList.Add(LShower);
+  outerElementsList.Add(LOverlay);
   outerElementsList.Add(TIdleCharacter1);
   outerElementsList.Add(TBackground1);
   outerElementsList.Add(TShowerAnimationFrame1);
+  outerElementsList.Add(LGame);
 
   initGame();
 end;
@@ -73,7 +80,7 @@ begin
   statsDataManager.initialize();
 
   // Make needed Controls visible
-  LShower.Visible := true;
+  LOverlay.Visible := true;
   TIdleCharacter1.Visible := true;
   TBackground1.Visible := true;
   TShowerAnimationFrame1.Visible := true;
@@ -122,8 +129,9 @@ begin
           statsDataManager.waterLevel := statsDataManager.maxWaterLevel;
           statsDataManager.lifes := statsDataManager.lifes + 1;
 
-          if statsDataManager.lifes > statsDataManager.maxLifes then begin
-             statsDataManager.lifes := statsDataManager.maxLifes;
+          if statsDataManager.lifes > statsDataManager.maxLifes then
+          begin
+            statsDataManager.lifes := statsDataManager.maxLifes;
           end
 
         end;
@@ -143,6 +151,12 @@ begin
 
   lblWater.Text := statsDataManager.waterLevel.toString;
   lblLifes.Text := statsDataManager.lifes.toString;
+end;
+
+procedure TForm1.btnPlayClick(Sender: TObject);
+begin
+  makeAllControlsInvisible();
+  lGame.Visible := true;
 end;
 
 procedure TForm1.btnResurectClick(Sender: TObject);
@@ -180,6 +194,15 @@ var
 begin
   for i := 0 to outerElementsList.Count - 1 do
     outerElementsList[i].Visible := false;
+end;
+
+procedure TForm1.btnBackFromGameClick(Sender: TObject);
+begin
+  makeAllControlsInvisible(); // Make needed Controls visible
+  LOverlay.Visible := true;
+  TIdleCharacter1.Visible := true;
+  TBackground1.Visible := true;
+  TShowerAnimationFrame1.Visible := true;
 end;
 
 end.
