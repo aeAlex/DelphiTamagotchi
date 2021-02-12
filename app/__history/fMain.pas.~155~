@@ -28,11 +28,9 @@ type
     Rectangle2: TRectangle;
     Label1: TLabel;
     btnResurect: TButton;
-    GridLayout2: TGridLayout;
     procedure FormCreate(Sender: TObject);
     procedure btnShowerClick(Sender: TObject);
     procedure btnResurectClick(Sender: TObject);
-    procedure GridLayout2Click(Sender: TObject);
   private
     { Private declarations }
     showerActivated: boolean;
@@ -63,11 +61,6 @@ begin
   outerElementsList.Add(TShowerAnimationFrame1);
 
   initGame();
-end;
-
-procedure TForm1.GridLayout2Click(Sender: TObject);
-begin
-
 end;
 
 procedure TForm1.initGame;
