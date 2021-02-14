@@ -36,17 +36,22 @@ type
     Rectangle4: TRectangle;
     lblCoins: TLabel;
     LStatsOverlay: TLayout;
+    ReduceStatsTimer: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure btnShowerClick(Sender: TObject);
     procedure btnResurectClick(Sender: TObject);
     procedure btnPlayClick(Sender: TObject);
     procedure btnBackFromGameClick(Sender: TObject);
     procedure GameLoopTimer(Sender: TObject);
+    procedure ReduceStatsTimerTimer(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
   private
     { Private declarations }
     showerActivated: boolean;
     outerElementsList: TList<TControl>;
     showerButtonText: string;
+    reduceWaterTask: ITask;
     procedure initGame();
     procedure makeAllControlsInvisible();
     procedure killSlime();
@@ -65,6 +70,12 @@ implementation
 
 uses dmStatsDataManager, fSprite, fCoinSprite, fBombSprite;
 
+procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   reduceWaterTask.Cancel;
+   reduceWaterTask := nil;
+end;
+
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   outerElementsList := TList<TControl>.Create;
@@ -78,11 +89,12 @@ begin
   initGame();
 end;
 
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+  //reduceWaterTask.Cancel;
+end;
+
 procedure TForm1.initGame;
-var
-  reduceWaterTask: ITask;
-var
-  waterIncrementValue: integer;
 begin
 
   statsDataManager.initialize();
@@ -106,53 +118,29 @@ begin
   reduceWaterTask := TTask.Create(
     procedure
     begin
-      while (statsDataManager.waterLevel >= 0) and
-        (statsDataManager.lifes > 0) do
+      while (statsDataManager.isAlive) do
       begin
         sleep(1000);
 
-        // check if slime has water
-        if statsDataManager.waterLevel = 0 then
-        begin
-          statsDataManager.lifes := statsDataManager.lifes - 1;
-        end;
-
         if showerActivated then
         begin
-          waterIncrementValue := 1;
-        end
-        else
-        begin
-          waterIncrementValue := -1;
+          statsDataManager.waterLevel := statsDataManager.waterLevel + 1;
+          // pay the water cost
+          statsDataManager.coins := statsDataManager.coins - 1;
         end;
-
-        statsDataManager.waterLevel := statsDataManager.waterLevel +
-          waterIncrementValue;
-
-        if statsDataManager.waterLevel < 0 then
-          statsDataManager.waterLevel := 0;
 
         if statsDataManager.waterLevel > statsDataManager.maxWaterLevel then
         begin
           statsDataManager.waterLevel := statsDataManager.maxWaterLevel;
+
           statsDataManager.lifes := statsDataManager.lifes + 1;
 
+          // cap lifes at maximum
           if statsDataManager.lifes > statsDataManager.maxLifes then
           begin
             statsDataManager.lifes := statsDataManager.maxLifes;
           end
 
-        end;
-
-        if showerActivated then
-        begin
-          statsDataManager.coins := statsDataManager.coins - 1;
-        end;
-
-        // kill slime when lifes are 0
-        if statsDataManager.lifes <= 0 then
-        begin
-          killSlime();
         end;
 
       end;
@@ -207,8 +195,10 @@ end;
 
 procedure TForm1.killSlime;
 begin
+  statsDataManager.isAlive := false;
   makeAllControlsInvisible();
   LDead.Visible := true;
+  reduceWaterTask.Cancel;
 end;
 
 procedure TForm1.makeAllControlsInvisible;
@@ -217,6 +207,25 @@ var
 begin
   for i := 0 to outerElementsList.Count - 1 do
     outerElementsList[i].Visible := false;
+end;
+
+procedure TForm1.ReduceStatsTimerTimer(Sender: TObject);
+begin
+  // Reduce the Water Level
+  statsDataManager.waterLevel := statsDataManager.waterLevel - 1;
+  // check if slime has water
+  if statsDataManager.waterLevel < 0 then
+  begin
+    statsDataManager.waterLevel := 0;
+    statsDataManager.lifes := statsDataManager.lifes - 1;
+  end;
+
+  // kill slime when lifes are 0
+  if statsDataManager.lifes <= 0 then
+  begin
+    killSlime();
+  end;
+
 end;
 
 procedure TForm1.updateDisplayedStats;

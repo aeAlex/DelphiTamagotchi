@@ -13,9 +13,11 @@ type
     FmaxLifes: integer;
     FmaxWaterLevel: integer;
     Fcoins: integer;
+    FisAlive: boolean;
     procedure SetwaterLevel(const Value: integer);
     procedure Setlifes(const Value: integer);
     procedure Setcoins(const Value: integer);
+    procedure SetisAlive(const Value: boolean);
     { Private declarations }
   public
     { Public declarations }
@@ -25,6 +27,7 @@ type
     property maxLifes: integer read FmaxLifes;
     property maxWaterLevel: integer read FmaxWaterLevel;
     property coins: integer read Fcoins write Setcoins;
+    property isAlive: boolean read FisAlive write SetisAlive;
   end;
 
 var
@@ -43,11 +46,17 @@ begin
   FmaxLifes := 10;
   FmaxWaterLevel := 10;
   Fcoins := 0;
+  FisAlive := true;
 end;
 
 procedure TStatsDataManager.Setcoins(const Value: integer);
 begin
   Fcoins := Value;
+end;
+
+procedure TStatsDataManager.SetisAlive(const Value: boolean);
+begin
+  FisAlive := Value;
 end;
 
 procedure TStatsDataManager.Setlifes(const Value: integer);
