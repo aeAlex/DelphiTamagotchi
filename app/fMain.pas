@@ -85,6 +85,7 @@ begin
   outerElementsList.Add(TBackground1);
   outerElementsList.Add(TShowerAnimationFrame1);
   outerElementsList.Add(LGame);
+  outerElementsList.Add(LStatsOverlay);
 
   initGame();
 end;
@@ -101,6 +102,7 @@ begin
 
   // Make needed Controls visible
   LOverlay.Visible := true;
+  LStatsOverlay.Visible := true;
   TIdleCharacter1.Visible := true;
   TBackground1.Visible := true;
   TShowerAnimationFrame1.Visible := true;
@@ -152,6 +154,7 @@ end;
 procedure TForm1.btnPlayClick(Sender: TObject);
 begin
   makeAllControlsInvisible();
+  LStatsOverlay.Visible := true;
   LGame.Visible := true;
 end;
 
@@ -238,6 +241,7 @@ end;
 procedure TForm1.btnBackFromGameClick(Sender: TObject);
 begin
   makeAllControlsInvisible(); // Make needed Controls visible
+  LStatsOverlay.Visible := true;
   LOverlay.Visible := true;
   TIdleCharacter1.Visible := true;
   TBackground1.Visible := true;

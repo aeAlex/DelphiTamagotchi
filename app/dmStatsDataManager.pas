@@ -22,6 +22,7 @@ type
   public
     { Public declarations }
     procedure initialize();
+    procedure saveStats();
     property waterLevel: integer read FwaterLevel write SetwaterLevel;
     property lifes: integer read Flifes write Setlifes;
     property maxLifes: integer read FmaxLifes;
@@ -47,6 +48,11 @@ begin
   FmaxWaterLevel := 10;
   Fcoins := 0;
   FisAlive := true;
+end;
+
+procedure TStatsDataManager.saveStats;
+begin
+
 end;
 
 procedure TStatsDataManager.Setcoins(const Value: integer);

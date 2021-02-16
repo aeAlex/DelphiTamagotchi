@@ -1,0 +1,285 @@
+unit fMain;
+
+interface
+
+uses
+  System.SysUtils, System.Types, System.UITypes, System.Classes,
+  System.Variants,
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, fCharacter,
+  fIdleCharacter, fBackground,
+  System.Threading,
+  fSpriteAnimation, fShowerAnimation, fButton, FMX.Layouts,
+  FMX.Controls.Presentation, FMX.StdCtrls, FMX.Objects, Generics.Collections;
+
+type
+  TForm1 = class(TForm)
+    TIdleCharacter1: TIdleCharacter;
+    TBackground1: TBackground;
+    TShowerAnimationFrame1: TShowerAnimationFrame;
+    LOverlay: TLayout;
+    btnShower: TMyButton;
+    GridLayout1: TGridLayout;
+    rectLifeImage: TRectangle;
+    lblLifes: TLabel;
+    rectWaterImage: TRectangle;
+    lblWater: TLabel;
+    LDead: TLayout;
+    Rectangle1: TRectangle;
+    Rectangle2: TRectangle;
+    Label1: TLabel;
+    btnResurect: TButton;
+    btnPlay: TRectangle;
+    LGame: TLayout;
+    Rectangle3: TRectangle;
+    btnBackFromGame: TRectangle;
+    GameLoop: TTimer;
+    Rectangle4: TRectangle;
+    lblCoins: TLabel;
+    LStatsOverlay: TLayout;
+    ReduceStatsTimer: TTimer;
+    procedure FormCreate(Sender: TObject);
+    procedure btnShowerClick(Sender: TObject);
+    procedure btnResurectClick(Sender: TObject);
+    procedure btnPlayClick(Sender: TObject);
+    procedure btnBackFromGameClick(Sender: TObject);
+    procedure GameLoopTimer(Sender: TObject);
+    procedure ReduceStatsTimerTimer(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+  private
+    { Private declarations }
+    showerActivated: boolean;
+    outerElementsList: TList<TControl>;
+    showerButtonText: string;
+    reduceWaterTask: ITask;
+    procedure initGame();
+    procedure makeAllControlsInvisible();
+    procedure killSlime();
+    procedure updateDisplayedStats();
+    procedure checkWaterBill();
+  public
+    { Public declarations }
+  end;
+
+var
+  Form1: TForm1;
+
+implementation
+
+{$R *.fmx}
+
+uses dmStatsDataManager, fSprite, fCoinSprite, fBombSprite;
+
+procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
+begin
+   reduceWaterTask.Cancel;
+   reduceWaterTask := nil;
+end;
+
+procedure TForm1.FormCreate(Sender: TObject);
+begin
+  outerElementsList := TList<TControl>.Create;
+  outerElementsList.Add(LDead);
+  outerElementsList.Add(LOverlay);
+  outerElementsList.Add(TIdleCharacter1);
+  outerElementsList.Add(TBackground1);
+  outerElementsList.Add(TShowerAnimationFrame1);
+  outerElementsList.Add(LGame);
+
+  initGame();
+end;
+
+procedure TForm1.FormDestroy(Sender: TObject);
+begin
+  //reduceWaterTask.Cancel;
+end;
+
+procedure TForm1.initGame;
+begin
+
+  statsDataManager.initialize();
+
+  // Make needed Controls visible
+  LOverlay.Visible := true;
+  TIdleCharacter1.Visible := true;
+  TBackground1.Visible := true;
+  TShowerAnimationFrame1.Visible := true;
+
+  showerActivated := false;
+  TShowerAnimationFrame1.StopAnimation;
+  btnShower.Label1.Text := 'Activate Shower';
+
+  // Start the Character Animation
+  TIdleCharacter1.StartAnimation;
+
+  statsDataManager.waterLevel := statsDataManager.maxWaterLevel;
+  statsDataManager.lifes := statsDataManager.maxLifes;
+  // slowly Reduce Water Level
+  reduceWaterTask := TTask.Create(
+    procedure
+    begin
+      while (statsDataManager.isAlive) do
+      begin
+        sleep(1000);
+
+        if showerActivated then
+        begin
+          statsDataManager.waterLevel := statsDataManager.waterLevel + 1;
+          // pay the water cost
+          statsDataManager.coins := statsDataManager.coins - 1;
+        end;
+
+        if statsDataManager.waterLevel > statsDataManager.maxWaterLevel then
+        begin
+          statsDataManager.waterLevel := statsDataManager.maxWaterLevel;
+
+          statsDataManager.lifes := statsDataManager.lifes + 1;
+
+          // cap lifes at maximum
+          if statsDataManager.lifes > statsDataManager.maxLifes then
+          begin
+            statsDataManager.lifes := statsDataManager.maxLifes;
+          end
+
+        end;
+
+      end;
+    end);
+  reduceWaterTask.Start();
+
+end;
+
+procedure TForm1.btnPlayClick(Sender: TObject);
+begin
+  makeAllControlsInvisible();
+  LGame.Visible := true;
+end;
+
+procedure TForm1.btnResurectClick(Sender: TObject);
+begin
+  LDead.Visible := false;
+  initGame();
+end;
+
+procedure TForm1.btnShowerClick(Sender: TObject);
+begin
+  // Start the Shower Animation
+  if not showerActivated then
+  begin
+    TShowerAnimationFrame1.StartAnimation;
+    showerButtonText := 'Deactivate Shower';
+  end
+  else
+  begin
+    TShowerAnimationFrame1.StopAnimation;
+    showerButtonText := 'Activate Shower';
+  end;
+  showerActivated := not showerActivated;
+
+  checkWaterBill;
+end;
+
+procedure TForm1.checkWaterBill;
+begin
+  if statsDataManager.coins <= 0 then
+  begin
+    btnShower.Label1.Text := 'You need Coins to Activate the Shower';
+    showerActivated := false;
+    TShowerAnimationFrame1.StopAnimation;
+  end
+  else
+  begin // can pay shower bill
+    btnShower.Label1.Text := showerButtonText;
+  end;
+end;
+
+procedure TForm1.killSlime;
+begin
+  statsDataManager.isAlive := false;
+  makeAllControlsInvisible();
+  LDead.Visible := true;
+  reduceWaterTask.Cancel;
+end;
+
+procedure TForm1.makeAllControlsInvisible;
+var
+  i: integer;
+begin
+  for i := 0 to outerElementsList.Count - 1 do
+    outerElementsList[i].Visible := false;
+end;
+
+procedure TForm1.ReduceStatsTimerTimer(Sender: TObject);
+begin
+  // Reduce the Water Level
+  statsDataManager.waterLevel := statsDataManager.waterLevel - 1;
+  // check if slime has water
+  if statsDataManager.waterLevel < 0 then
+  begin
+    statsDataManager.waterLevel := 0;
+    statsDataManager.lifes := statsDataManager.lifes - 1;
+  end;
+
+  // kill slime when lifes are 0
+  if statsDataManager.lifes <= 0 then
+  begin
+    killSlime();
+  end;
+
+end;
+
+procedure TForm1.updateDisplayedStats;
+begin
+  lblWater.Text := statsDataManager.waterLevel.toString;
+  lblLifes.Text := statsDataManager.lifes.toString;
+  lblCoins.Text := statsDataManager.coins.toString;
+end;
+
+procedure TForm1.btnBackFromGameClick(Sender: TObject);
+begin
+  makeAllControlsInvisible(); // Make needed Controls visible
+  LOverlay.Visible := true;
+  TIdleCharacter1.Visible := true;
+  TBackground1.Visible := true;
+  TShowerAnimationFrame1.Visible := true;
+end;
+
+procedure TForm1.GameLoopTimer(Sender: TObject);
+var
+  i: integer;
+  nbsprite: integer;
+begin
+  updateDisplayedStats;
+  checkWaterBill;
+
+  // Let the user Collect Coins when in play mode
+  if LGame.Visible then
+  begin
+    i := 0;
+    nbsprite := 0;
+    while (i < LGame.ChildrenCount) do
+    begin
+      if (LGame.Children[i] is TSprite) then
+      begin
+        if (LGame.Children[i] as TSprite).CanBeKilled then
+          // Remove when marked as killable
+          LGame.RemoveObject(i)
+        else
+        begin
+          (LGame.Children[i] as TSprite).MoveSprite;
+          inc(i);
+          inc(nbsprite);
+        end;
+      end
+      else
+        inc(i);
+    end;
+    if (nbsprite < 10) and (random(100) < 10) then
+      if random(100) < 80 then
+        TCoinSprite.Create(LGame)
+      else
+        TBombSprite.Create(LGame)
+  end;
+end;
+
+end.
