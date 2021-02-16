@@ -37,6 +37,7 @@ type
     lblCoins: TLabel;
     LStatsOverlay: TLayout;
     ReduceStatsTimer: TTimer;
+    IncreaseStatsTimer: TTimer;
     procedure FormCreate(Sender: TObject);
     procedure btnShowerClick(Sender: TObject);
     procedure btnResurectClick(Sender: TObject);
@@ -44,14 +45,11 @@ type
     procedure btnBackFromGameClick(Sender: TObject);
     procedure GameLoopTimer(Sender: TObject);
     procedure ReduceStatsTimerTimer(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
-    procedure FormClose(Sender: TObject; var Action: TCloseAction);
+    procedure IncreaseStatsTimerTimer(Sender: TObject);
   private
     { Private declarations }
     showerActivated: boolean;
     outerElementsList: TList<TControl>;
-    showerButtonText: string;
-    reduceWaterTask: ITask;
     procedure initGame();
     procedure makeAllControlsInvisible();
     procedure killSlime();
@@ -70,12 +68,6 @@ implementation
 
 uses dmStatsDataManager, fSprite, fCoinSprite, fBombSprite;
 
-procedure TForm1.FormClose(Sender: TObject; var Action: TCloseAction);
-begin
-   reduceWaterTask.Cancel;
-   reduceWaterTask := nil;
-end;
-
 procedure TForm1.FormCreate(Sender: TObject);
 begin
   outerElementsList := TList<TControl>.Create;
@@ -88,11 +80,6 @@ begin
   outerElementsList.Add(LStatsOverlay);
 
   initGame();
-end;
-
-procedure TForm1.FormDestroy(Sender: TObject);
-begin
-  //reduceWaterTask.Cancel;
 end;
 
 procedure TForm1.initGame;
@@ -116,38 +103,6 @@ begin
 
   statsDataManager.waterLevel := statsDataManager.maxWaterLevel;
   statsDataManager.lifes := statsDataManager.maxLifes;
-  // slowly Reduce Water Level
-  reduceWaterTask := TTask.Create(
-    procedure
-    begin
-      while (statsDataManager.isAlive) do
-      begin
-        sleep(1000);
-
-        if showerActivated then
-        begin
-          statsDataManager.waterLevel := statsDataManager.waterLevel + 1;
-          // pay the water cost
-          statsDataManager.coins := statsDataManager.coins - 1;
-        end;
-
-        if statsDataManager.waterLevel > statsDataManager.maxWaterLevel then
-        begin
-          statsDataManager.waterLevel := statsDataManager.maxWaterLevel;
-
-          statsDataManager.lifes := statsDataManager.lifes + 1;
-
-          // cap lifes at maximum
-          if statsDataManager.lifes > statsDataManager.maxLifes then
-          begin
-            statsDataManager.lifes := statsDataManager.maxLifes;
-          end
-
-        end;
-
-      end;
-    end);
-  reduceWaterTask.Start();
 
 end;
 
@@ -166,20 +121,20 @@ end;
 
 procedure TForm1.btnShowerClick(Sender: TObject);
 begin
-  // Start the Shower Animation
+  if statsDataManager.coins <= 0 then
+    Exit;
+
   if not showerActivated then
   begin
     TShowerAnimationFrame1.StartAnimation;
-    showerButtonText := 'Deactivate Shower';
   end
   else
   begin
     TShowerAnimationFrame1.StopAnimation;
-    showerButtonText := 'Activate Shower';
   end;
+
   showerActivated := not showerActivated;
 
-  checkWaterBill;
 end;
 
 procedure TForm1.checkWaterBill;
@@ -191,8 +146,15 @@ begin
     TShowerAnimationFrame1.StopAnimation;
   end
   else
-  begin // can pay shower bill
-    btnShower.Label1.Text := showerButtonText;
+  begin
+    if showerActivated then
+    begin
+      btnShower.Label1.Text := 'Deactivate Shower';
+    end
+    else
+    begin
+      btnShower.Label1.Text := 'Activate Shower';
+    end;
   end;
 end;
 
@@ -201,7 +163,6 @@ begin
   statsDataManager.isAlive := false;
   makeAllControlsInvisible();
   LDead.Visible := true;
-  reduceWaterTask.Cancel;
 end;
 
 procedure TForm1.makeAllControlsInvisible;
@@ -283,6 +244,35 @@ begin
         TCoinSprite.Create(LGame)
       else
         TBombSprite.Create(LGame)
+  end;
+end;
+
+procedure TForm1.IncreaseStatsTimerTimer(Sender: TObject);
+begin
+
+  if (statsDataManager.isAlive) then
+  begin
+    if showerActivated then
+    begin
+      statsDataManager.waterLevel := statsDataManager.waterLevel + 1;
+      // pay the water cost
+      statsDataManager.coins := statsDataManager.coins - 1;
+    end;
+
+    if statsDataManager.waterLevel > statsDataManager.maxWaterLevel then
+    begin
+      statsDataManager.waterLevel := statsDataManager.maxWaterLevel;
+
+      statsDataManager.lifes := statsDataManager.lifes + 1;
+
+      // cap lifes at maximum
+      if statsDataManager.lifes > statsDataManager.maxLifes then
+      begin
+        statsDataManager.lifes := statsDataManager.maxLifes;
+      end
+
+    end;
+
   end;
 end;
 
